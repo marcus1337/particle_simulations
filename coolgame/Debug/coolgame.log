@@ -1,0 +1,8 @@
+﻿  ParticleObject.cpp
+c:\users\marcus\source\repos\coolgame\coolgame\shadershape.h(13): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  GLM: GLM_GTX_constants extension is deprecated, include GLM_GTC_constants (glm/gtc/constants.hpp) instead
+c:\users\marcus\source\repos\coolgame\coolgame\misccode\utils2.h(65): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\marcus\source\repos\coolgame\coolgame\misccode\utils2.h(68): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\marcus\source\repos\coolgame\coolgame\particleobject.cpp(20): warning C4018: '<': signed/unsigned mismatch
+c:\users\marcus\source\repos\coolgame\coolgame\particleobject.cpp(54): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  coolgame.vcxproj -> C:\Users\Marcus\source\repos\coolgame\Debug\coolgame.exe
