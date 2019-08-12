@@ -15,8 +15,8 @@ uniform vec3 camera_position;
 uniform mat4 P;
 
 const vec2 vpSize = vec2(-1,1);
-const float rad = 0.5;
-const float dia = 100.0;
+//const float rad = 0.5;
+//const float dia = 100.0;
 
 out vec3 color;
 out float alpha;
@@ -34,7 +34,7 @@ void main()
 	gl_Position = MVP * gl_Position;
 
 	//pixelSize = vpHeight * P[1][1] * radius / w_clip
-	gl_PointSize = (u_screenSize.y *  P[1][1] * rad) / gl_Position.w;
+	gl_PointSize = (u_screenSize.y *  P[1][1] * radius) / gl_Position.w;
 
 	radiusPixels = gl_PointSize / 2.0;
 	centre = (0.5 * gl_Position.xy/gl_Position.w + 0.5) * u_screenSize;

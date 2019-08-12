@@ -14,6 +14,8 @@ void ShaderShape::initParticleShader1() {
     shaderProgram = loadShaderProgram(vertShadName, fragShadName);
 
     glGenVertexArrays(1, &(ctx.meshVAO.vao));
+    glBindVertexArray(ctx.meshVAO.vao);
+    glBindVertexArray(ctx.defaultVAO); // unbinds the VAO
 }
 
 void ShaderShape::init() {

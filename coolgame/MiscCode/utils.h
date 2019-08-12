@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include <functional> //for std::hash
+
 namespace {
 
 std::string readShaderSource(const std::string &filename)
@@ -15,7 +17,6 @@ std::string readShaderSource(const std::string &filename)
     std::ifstream file(filename);
     std::stringstream stream;
     stream << file.rdbuf();
-
     return stream.str();
 }
 
@@ -39,12 +40,23 @@ void showProgramInfoLog(GLuint program)
     std::cerr << infoLogStr << std::endl;
 }
 
+std::string path3DShaders = "C:\\Users\\Marcus\\source\\repos\\coolgame\\coolgame\\";
+std::vector<std::pair<size_t, GLuint>> programs;
+
 GLuint loadShaderProgram(const std::string &vertexShaderFilename,
                          const std::string &fragmentShaderFilename)
 {
+    std::string keyStr = vertexShaderFilename + fragmentShaderFilename;
+    std::hash<std::string> hasher;
+    size_t hashed = hasher(keyStr);
+    for (auto po : programs) {
+        if (po.first == hashed)
+            return po.second;
+    }
+
     // Load and compile vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    std::string vertexShaderSource = readShaderSource(vertexShaderFilename);
+    std::string vertexShaderSource = readShaderSource(path3DShaders+vertexShaderFilename);
     const char *vertexShaderSourcePtr = vertexShaderSource.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderSourcePtr, nullptr);
 
@@ -60,7 +72,7 @@ GLuint loadShaderProgram(const std::string &vertexShaderFilename,
 
     // Load and compile fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    std::string fragmentShaderSource = readShaderSource(fragmentShaderFilename);
+    std::string fragmentShaderSource = readShaderSource(path3DShaders+fragmentShaderFilename);
     const char *fragmentShaderSourcePtr = fragmentShaderSource.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSourcePtr, nullptr);
 
