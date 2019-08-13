@@ -26,8 +26,10 @@ GameHandler::GameHandler() {
     /////////////
     particleObj.screenWidth = &mywindow.SCR_WIDTH;
     particleObj.screenHeight = &mywindow.SCR_HEIGHT;
-    particleObj.init2(17.f,0.01f,glm::vec4(1,1,0,1),&shapeshader, &partShadCreator);
+    particleObj.init2(17.f,0.01f,glm::vec4(1,1,0,1.0f),&shapeshader, &partShadCreator);
    // particleObj.init(17.0f, &shapeshader, &particleShader, &particleShader2);
+
+    floor.init();
 
     //////////////
     particleTestShader.initParticleShader1();
@@ -97,19 +99,20 @@ void GameHandler::render() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     skybox.draw(VP);
-    glEnable(GL_DEPTH_TEST);
-    
-    particleObj.draw2(VP, mywindow.projection);
-   // particleObj.draw(VP);
 
-    //glDepthMask(GL_FALSE);
+    glEnable(GL_DEPTH_TEST);
+
     testParticle.draw2(VP, mywindow.projection, mywindow.view);
     testParticle2.draw2(VP, mywindow.projection, mywindow.view);
-   // glDepthMask(GL_TRUE);
+    
+    particleObj.draw2(VP, mywindow.projection, mywindow.camera.Position);
+
 
     for (Shape& shape : shapes) {
    //     shape.draw(VP);
     }
+
+    floor.draw(VP, mywindow.projection, mywindow.camera.Position);
 
     glfwSwapBuffers(mywindow.window);
 }

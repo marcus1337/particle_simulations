@@ -41,6 +41,8 @@ void showProgramInfoLog(GLuint program)
 }
 
 std::string path3DShaders = "C:\\Users\\Marcus\\source\\repos\\coolgame\\coolgame\\";
+std::string path2DTexts = "C:\\Users\\Marcus\\source\\repos\\coolgame\\Debug\\res\\";
+
 std::vector<std::pair<size_t, GLuint>> programs;
 
 GLuint loadShaderProgram(const std::string &vertexShaderFilename,
@@ -116,8 +118,9 @@ GLuint loadShaderProgram(const std::string &vertexShaderFilename,
     return program;
 }
 
-GLuint load2DTexture(const std::string &filename)
+GLuint load2DTexture(const std::string &filename_, bool repeatPattern = false)
 {
+    std::string filename = path2DTexts + filename_;
     std::vector<unsigned char> data;
     unsigned width, height;
     unsigned error = lodepng::decode(data, width, height, filename);
@@ -129,12 +132,26 @@ GLuint load2DTexture(const std::string &filename)
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA,
-                 GL_UNSIGNED_BYTE, &(data[0]));
+
+    if (!repeatPattern) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA,
+            GL_UNSIGNED_BYTE, &(data[0]));
+    }
+
+    if (repeatPattern) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA,
+            GL_UNSIGNED_BYTE, &(data[0]));
+    }
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return texture;

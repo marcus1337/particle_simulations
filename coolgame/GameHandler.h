@@ -25,12 +25,15 @@
 #include "CommandHandler.h"
 #include "ParticleShader.h"
 
+#include "Floor.h"
+
 class GameHandler{
 
     MyWindow mywindow;
     ShaderShape shapeshader, particleShader, particleShader2;
     ShaderShape particleTestShader;
     ParticleShader partShadCreator;
+    Floor floor;
 
     std::vector<Shape> shapes;
     SkyBox skybox;

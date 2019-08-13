@@ -43,6 +43,8 @@ public:
 
     float alpha = 1.f;
 
+    int indice = -1;
+
 };
 
 #endif

@@ -28,11 +28,14 @@ void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_,
 
     partShadIndex = particleShadCreator->getShaderIndex(ParticleShader::FOX, partRadius, color, partPositions);
 
+    int indice_ = 0;
     for (auto p : partPositions) {
         Particle particle(particleShader, p, partRadius, 1.0f);
+        particle.indice = indice_;
         particles.push_back(particle);
+        indice_++;
     }
-
+    indices.resize(particles.size());
    // cout << particleShadCreator_->shaders[partShadIndex].vao << endl;
 }
 
@@ -70,10 +73,16 @@ void ParticleObject::draw(glm::mat4& VP) {
     }
 }
 
-void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P) {
+void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_) {
     //glm::mat4 rotateMat = glm::toMat4(orientation);
     glm::mat4 translateMat = glm::translate(glm::mat4(1.0f), position);
-    glm::mat4 modModel = translateMat;
+
+  //  glm::vec3 EulerAngles(90, 45, 0);
+   // rotation = glm::quat(EulerAngles);
+
+    glm::mat4 RotationMatrix = glm::toMat4(rotation);
+
+    glm::mat4 modModel = translateMat * RotationMatrix;
     glm::mat4 MVP = VP * modModel;
 
     GLuint prog = particleShadCreator->shaders[partShadIndex].shaderProgram;
@@ -90,7 +99,26 @@ void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P) {
     //glDrawElements(GL_POINTS, particleShadCreator->shaders[partShadIndex].numVertices, GL_UNSIGNED_INT,0);
     glBindVertexArray(vao);
 
-    //glDrawElements(GL_TRIANGLES, particleShadCreator->shaders[partShadIndex].numVertices, GL_UNSIGNED_INT, 0);
-    glDrawArrays(GL_POINTS, 0, particleShadCreator->shaders[partShadIndex].numVertices);
+    if (color.w < 1.0f) {
+        std::sort(particles.begin(), particles.end(), [&](const Particle& v1, const Particle& v2) {
+            glm::vec4 p1(v1.position, 1.0f);
+            glm::vec4 p2(v2.position, 1.0f);
+            p1 = modModel* p1;
+            p2 = modModel* p2;
+            auto d1 = glm::distance(p1, glm::vec4(cameraPos_,1.0f));
+            auto d2 = glm::distance(p2, glm::vec4(cameraPos_,1.0f));
+            return d1 > d2;
+        });
+        for (int i = 0; i < particles.size(); i++) {
+            indices[i] = particles[i].indice;
+        }
+        glDepthMask(GL_FALSE);
+        glDrawElements(GL_POINTS, particleShadCreator->shaders[partShadIndex].numVertices, GL_UNSIGNED_INT, indices.data());
+        glDepthMask(GL_TRUE);
+    }
+    else {
+        glDrawArrays(GL_POINTS, 0, particleShadCreator->shaders[partShadIndex].numVertices);
+    }
+
     glBindVertexArray(0);
 }
