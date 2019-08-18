@@ -9,6 +9,7 @@ GameHandler::GameHandler() {
     if (errorCheck)
         exit(EXIT_FAILURE);
 
+    //getchar();
 
     skybox.init(&mywindow);
     shapeshader.init();
@@ -55,6 +56,10 @@ GameHandler::GameHandler() {
    // testParticle.radius = 0.5f;
     testParticle2.radius = 0.5f;
 
+    for (int i = 0; i < 125; i++) {
+        tps[i] = testParticle;
+        tps[i].isColliding = true;
+    }
 
     commandhandler.movablePosition = &testParticle.position;
     mywindow.commandhandler = &commandhandler;
@@ -81,12 +86,31 @@ void GameHandler::checkCollisions() {
     testParticle.isColliding = false;
     testParticle.isColliding = testParticle.checkCollision(testParticle2);
 
+    int counter = 0;
+
     for (Particle& part : particleObj.particles) {
-        if (part.checkCollision(testParticle)) {
+        //tp3.position = part.partData.actualPos();
+        tps[counter].position = part.partData.actualPos();
+        counter++;
+        if (Particle::checkCollision(part.partData.actualPos(), testParticle.position, part.radius,testParticle.radius)) {
             testParticle.isColliding = true;
-            break;
+            part.partData.addCollision(glm::vec3(20, 0, 0), testParticle.position);
+        //cout << "TEST " << part.position.x << "," << part.position.y << "," << part.position.z << endl;
         }
     }
+
+    //Check collision with the floor
+    for (Particle& part : particleObj.particles) {
+        glm::vec3 pos = part.partData.actualPos();
+        if (pos.y - part.radius < floor.position.y) {
+          //  part.partData.addCollision(particleObj.objData.V*-1.f, glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
+             part.partData.addCollision(glm::vec3(0, 9.81, 0), glm::vec3(pos.x, pos.y - part.radius/2, pos.z), 1.f, false);
+           //  particleObj.objData.position += floor.position.y - (pos.y - part.radius);
+             //cout << "TEST: " << (floor.position.y) << " r " << part.radius << " _ " << pos.y << endl;
+        }
+    }
+
+    particleObj.doPhysics();
 }
 
 void GameHandler::render() {
@@ -104,6 +128,11 @@ void GameHandler::render() {
 
     testParticle.draw2(VP, mywindow.projection, mywindow.view);
     testParticle2.draw2(VP, mywindow.projection, mywindow.view);
+    //tp3.draw2(VP, mywindow.projection, mywindow.view);
+
+    for (int i = 0; i < 125; i++) {
+        tps[i].draw2(VP, mywindow.projection, mywindow.view);
+    }
     
     particleObj.draw2(VP, mywindow.projection, mywindow.camera.Position);
 

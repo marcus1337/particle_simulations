@@ -19,8 +19,8 @@ void Floor::init() {
     ////////////////VAO SETUP
     GLfloat vertices[] = { // format = x, y, z, u, v
 
-    -floorSize, -1.0f, -floorSize,  0.0f, 0.0f,     floorSize, -1.0f, -floorSize, numReps, 0.0f,
-     floorSize,  -1.0f, floorSize, numReps, numReps,    -floorSize,  -1.0f, floorSize, 0.0f, numReps
+    -floorSize, 0.0f, -floorSize,  0.0f, 0.0f,     floorSize, 0.0f, -floorSize, numReps, 0.0f,
+     floorSize,  0.0f, floorSize, numReps, numReps,    -floorSize,  0.0f, floorSize, 0.0f, numReps
     };
     glGenVertexArrays(1, &vao); // vao saves state of array buffer, element array, etc
     glGenBuffers(1, &vbo); // vbo stores vertex data

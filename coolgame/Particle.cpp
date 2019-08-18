@@ -46,6 +46,13 @@ void BoundingSphere::init(ObjMesh* pMesh) {
 
 //int counter = 0;
 
+bool Particle::checkCollision(glm::vec3 pos1, glm::vec3 pos2, float radius1, float radius2) {
+    bool result = false;
+    float tmpDist = glm::distance(pos1, pos2);
+    tmpDist < ((radius1 + radius2)) ? result = true : result = false;
+    return result;
+}
+
 bool Particle::checkCollision(Particle& otherParticle) {
     bool result = false;
     float tmpDist = glm::distance(position, otherParticle.position);

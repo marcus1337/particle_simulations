@@ -17,25 +17,41 @@ void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_,
     ParticleCreator pcreator(shaderShape->ctx.mesh.vertices, partRadius/2);
     auto partPositions = pcreator.createParticles();
 
-    cout << "TEST " << partPositions.size() << endl;
+    //cout << "TEST " << partPositions.size() << endl;
+    objData.centerOfMass = glm::vec3(0, 0, 0);
+  //  float miny = 100;
 
     for (int i = 0; i < partPositions.size(); i++) {
         partPositions[i] *= scaleVal_;
+        objData.centerOfMass += partPositions[i];
+   //     miny = std::min<float>(miny, partPositions[i].y);
     }
+
+    objData.centerOfMass /= partPositions.size();
+    //objData.centerOfMass = glm::vec3(1000, 0, 0); //comment out to not have center at 0
+
     partRadius /= 2;
     partRadius *= scaleVal_;
     partRadius /= 2;
+
+    for (int i = 0; i < partPositions.size(); i++) {
+        objData.prepareData(1.0f, partPositions[i] - objData.centerOfMass);
+    }
 
     partShadIndex = particleShadCreator->getShaderIndex(ParticleShader::FOX, partRadius, color, partPositions);
 
     int indice_ = 0;
     for (auto p : partPositions) {
-        Particle particle(particleShader, p, partRadius, 1.0f);
+        ParticleData partData(p,partRadius,&objData);
+
+        Particle particle(partData, particleShader, p, partRadius, 1.0f);
         particle.indice = indice_;
         particles.push_back(particle);
         indice_++;
     }
     indices.resize(particles.size());
+   // glm::vec3 EulerAngles(45*2, 0, 0);
+   // objData.rotation = glm::quat(EulerAngles);
    // cout << particleShadCreator_->shaders[partShadIndex].vao << endl;
 }
 
@@ -66,6 +82,29 @@ void ParticleObject::init(float partDiameter_, ShaderShape* shaderShape_, Shader
     }
 }
 
+std::string getVecStr(glm::vec3 adata) {
+    return std::string("[" + to_string(adata.x) + "," + to_string(adata.y) + "," + to_string(adata.z) + "]");
+}
+
+void ParticleObject::doPhysics() {
+
+    glm::vec3 Fc(0,0,0);
+    glm::vec3 Tc(0,0,0);
+    //int counter = 0;
+    for (auto& p : particles) {
+        //if (counter == 0)
+         //   cout << "R " << getVecStr(p.partData.r) << " R0 " << getVecStr(p.partData.r0) << " DIFF " <<
+          //  (p.partData.r.y - p.partData.r0.y) << endl;
+        //counter++;
+        Fc += p.partData.getFc();
+        Tc += p.partData.getTc();
+        p.partData.update();
+    }
+
+    objData.update(Fc, Tc);
+    //cout << "TEST: " << objData.W.x << " " << objData.W.y << " " << objData.W.z << endl;
+}
+
 
 void ParticleObject::draw(glm::mat4& VP) {
     for (auto& particle : particles) {
@@ -75,12 +114,16 @@ void ParticleObject::draw(glm::mat4& VP) {
 
 void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_) {
     //glm::mat4 rotateMat = glm::toMat4(orientation);
-    glm::mat4 translateMat = glm::translate(glm::mat4(1.0f), position);
+    glm::mat4 translateMat = glm::translate(glm::mat4(1.0f), objData.position);
 
+   // cout << "WAT " << getVecStr(objData.position) << " _ " << getVecStr(particles[0].partData.objData->position) << " RAD : " << partRadius << endl;
   //  glm::vec3 EulerAngles(90, 45, 0);
    // rotation = glm::quat(EulerAngles);
 
-    glm::mat4 RotationMatrix = glm::toMat4(rotation);
+    glm::mat4 transTemp = glm::translate(glm::mat4(1.0f), -objData.centerOfMass);
+    glm::mat4 transTempBack = glm::translate(glm::mat4(1.0f), objData.centerOfMass);
+    glm::mat4 RotationMatrix = glm::toMat4(objData.rotation);
+    RotationMatrix = transTempBack * RotationMatrix * transTemp;
 
     glm::mat4 modModel = translateMat * RotationMatrix;
     glm::mat4 MVP = VP * modModel;
@@ -89,7 +132,6 @@ void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_) {
     GLuint vao = particleShadCreator->shaders[partShadIndex].vao;
 
     glUseProgram(prog);
-
     glUniformMatrix4fv(glGetUniformLocation(prog, "MVP"), 1, GL_FALSE, &MVP[0][0]);
     float P11 = P[1][1];
     glm::vec2 screenSize(*screenWidth, *screenHeight);

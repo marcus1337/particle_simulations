@@ -45,7 +45,9 @@ class GameHandler{
 
     ParticleObject particleObj;
 
-    Particle testParticle, testParticle2;
+    Particle testParticle, testParticle2, tp3;
+
+    Particle tps[125];
 
 public:
 

@@ -28,7 +28,7 @@ public:
     void cleanup();
     void draw(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_);
 
-    glm::vec3 position = glm::vec3(0, 0, 0);
+    glm::vec3 position = glm::vec3(0, -1, 0);
 };
 
 

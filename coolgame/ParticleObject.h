@@ -10,6 +10,7 @@
 #include "ParticleShader.h"
 
 #include <glm/gtc/quaternion.hpp>
+#include "Physics.h"
 
 class ParticleObject {
 public:
@@ -40,6 +41,11 @@ public:
     glm::vec3 position = glm::vec3(0.f, 0.f, 0.f);
     float partRadius = 1.0f;
     glm::quat rotation;
+
+    //////
+    ObjectData objData;
+
+    void doPhysics();
 
 };
 

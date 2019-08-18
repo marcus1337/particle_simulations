@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
@@ -137,11 +138,13 @@
     <ClCompile Include="ParticleCreator.cpp" />
     <ClCompile Include="ParticleObject.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ShaderShape.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SkyBox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Camera.h" />
@@ -158,12 +161,15 @@
     <ClInclude Include="ParticleCreator.h" />
     <ClInclude Include="ParticleObject.h" />
     <ClInclude Include="ParticleShader.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="ShaderShape.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="SkyBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\luascripts.lua" />
+    <None Include="floor.frag" />
+    <None Include="floor.vert" />
     <None Include="mesh.frag" />
     <None Include="mesh.vert" />
     <None Include="particle.frag" />
