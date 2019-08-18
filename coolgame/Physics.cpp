@@ -24,6 +24,10 @@ void ObjectData::prepareData(float mass_, glm::vec3 r) {
 
 }
 
+std::string getVecStr2(glm::vec3 adata) {
+    return std::string("[" + to_string(adata.x) + "," + to_string(adata.y) + "," + to_string(adata.z) + "]");
+}
+
 void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
 
     glm::mat4 RM = glm::toMat4(rotation);
@@ -37,6 +41,7 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
     Tc /= 8000.f*15;
 
     F = Fc;
+
     V += F / mass;
     W += It_inv * Tc;
 
@@ -45,6 +50,9 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
     glm::quat dq(cosf(ang / 2), a*sinf(ang / 2));
     rotation = glm::cross(dq, rotation);
     rotation = glm::normalize(rotation);
+
+    //if(V.x != 0 || V.z != 0)
+    //cout << "TEST " << getVecStr2(V) << endl;
     position += V;
 
 }
@@ -74,7 +82,10 @@ void ParticleData::addCollision(glm::vec3 o_v, glm::vec3 o_r, float o_mass, bool
     glm::vec3 rij = o_r - actualPos();
     glm::vec3 vij = o_v - v;
     float rij_len = glm::length(rij);
-    fs += -k * (d - rij_len * (rij / rij_len));
+    if (rij_len == 0)
+        return;
+
+    fs += (-k * (d - rij_len)) * (rij / rij_len);
     fd += n * vij;
 
     glm::vec3 vij_t = vij - (glm::dot(vij, rij / rij_len) * (rij / rij_len));

@@ -104,11 +104,16 @@ void GameHandler::checkCollisions() {
         glm::vec3 pos = part.partData.actualPos();
         if (pos.y - part.radius < floor.position.y) {
           //  part.partData.addCollision(particleObj.objData.V*-1.f, glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
-             part.partData.addCollision(glm::vec3(0, 9.81, 0), glm::vec3(pos.x, pos.y - part.radius/2, pos.z), 1.f, false);
-           //  particleObj.objData.position += floor.position.y - (pos.y - part.radius);
+             
+            particleObj.objData.V.y /= 2;
+            part.partData.addCollision(glm::vec3(part.partData.v.x, part.partData.v.y+9.81/2, part.partData.v.z), glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
+            //part.partData.addCollision(glm::vec3(0, 9.81, 0), glm::vec3(pos.x, pos.y - part.radius/2, pos.z), 1.f, false);
+             particleObj.objData.position.y += floor.position.y - (pos.y - part.radius);
              //cout << "TEST: " << (floor.position.y) << " r " << part.radius << " _ " << pos.y << endl;
         }
     }
+
+   // cout << "TEST " << particleObj.objData.V.y << endl;
 
     particleObj.doPhysics();
 }
