@@ -24,6 +24,7 @@ public:
     ParticleShader* particleShadCreator = nullptr;
     int partShadIndex = -1;
 
+    ParticleObject(const ParticleObject& a);
     ParticleObject();
     void init(float partDiameter_, ShaderShape* shaderShape_, ShaderShape* particleShader_, ShaderShape* particleShader2_);
     void init2(float partRadius, float scaleVal, glm::vec4 color_ , ShaderShape* shaderShape_, ParticleShader* particleShadCreator_);
@@ -44,6 +45,8 @@ public:
 
     //////
     ObjectData objData;
+
+    void copyObject(ParticleObject& other);
 
     void doPhysics();
 

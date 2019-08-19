@@ -8,6 +8,13 @@ using namespace std;
 ParticleObject::ParticleObject(){
 }
 
+ParticleObject::ParticleObject(const ParticleObject& a) {
+    *this = a;
+    for (auto& x : particles) {
+        x.partData.objData = &objData;
+    }
+}
+
 void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_, ShaderShape* shaderShape_, ParticleShader* particleShadCreator_) {
     partRadius = partRadius_;
     shaderShape = shaderShape_;
@@ -33,6 +40,8 @@ void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_,
     partRadius /= 2;
     partRadius *= scaleVal_;
     partRadius /= 2;
+
+    objData.partRadius = partRadius;
 
     for (int i = 0; i < partPositions.size(); i++) {
         objData.prepareData(1.0f, partPositions[i] - objData.centerOfMass);
@@ -163,4 +172,13 @@ void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_) {
     }
 
     glBindVertexArray(0);
+}
+
+
+void ParticleObject::copyObject(ParticleObject& other) {
+    *this = other;
+    for (auto& x : particles) {
+        x.partData.objData = &objData;
+    }
+
 }

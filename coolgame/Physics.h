@@ -18,7 +18,8 @@ struct ObjectData {
     glm::vec3 V = glm::vec3(0, 0, 0); //Velocity
     glm::vec3 W = glm::vec3(0, 0, 0); //Angular velocity
 
-    glm::mat3 I0, It_inv;
+    glm::mat3 I0 = glm::mat3(0); 
+    glm::mat3 It_inv;
     glm::mat3 I0_inv = glm::mat3(0);
 
     glm::vec3 F = glm::vec3(0, 0, 0);
@@ -48,7 +49,9 @@ struct ParticleData {
     ParticleData();
     ParticleData(glm::vec3 partPos_, float radius_, ObjectData* objData_);
     void update();
+
     void addCollision(glm::vec3 o_v, glm::vec3 o_r, float o_mass = 1.f, bool canMove = true);
+    void collisionParticle(ParticleData& p_other);
 
     glm::vec3 getFc();
     glm::vec3 getTc();

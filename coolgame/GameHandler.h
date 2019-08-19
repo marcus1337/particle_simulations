@@ -32,7 +32,7 @@ class GameHandler{
     MyWindow mywindow;
     ShaderShape shapeshader, particleShader, particleShader2;
     ShaderShape particleTestShader;
-    ParticleShader partShadCreator;
+    ParticleShader partShadCreator, partShadCreator2;
     Floor floor;
 
     std::vector<Shape> shapes;
@@ -43,11 +43,11 @@ class GameHandler{
     double lag = 0.0f;
     double current, previous;
 
-    ParticleObject particleObj;
+    std::vector<ParticleObject> particleObjs;
 
     Particle testParticle, testParticle2, tp3;
 
-    Particle tps[125];
+    //Particle tps[125];
 
 public:
 

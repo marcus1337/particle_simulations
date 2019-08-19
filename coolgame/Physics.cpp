@@ -102,3 +102,46 @@ glm::vec3 ParticleData::getTc() {
 glm::vec3 ParticleData::actualPos() {
     return objData->position + objData->centerOfMass + r;
 }
+
+void ParticleData::collisionParticle(ParticleData& po) {
+
+    float radiusSum = objData->partRadius + po.objData->partRadius;
+    glm::vec3 pos1 = actualPos();
+    glm::vec3 pos2 = po.actualPos();
+
+    glm::vec3 collisionNormal = pos2 - pos1;
+    float distancesq = glm::length2(collisionNormal);
+    if (distancesq <= radiusSum * radiusSum) { //This collision check was inspired by "Essential Mathematics for Games and Interactive Applications"
+        collisionNormal = glm::normalize(collisionNormal);
+        float distance = sqrtf(distancesq);
+        float penetration = radiusSum - distance;
+
+        objData->position -= 0.5f*penetration*collisionNormal;
+        po.objData->position += 0.5f*penetration*collisionNormal;
+
+        glm::vec3 relVelocity = v - po.v;
+        float vDotN = glm::dot(relVelocity,collisionNormal);
+        if (vDotN < 0)
+            return;
+
+        glm::vec3 rij = pos2 - pos1;
+        glm::vec3 vij = po.v - v;
+        float rij_len = glm::length(rij);
+        if (rij_len == 0)
+            return;
+
+        glm::vec3 vij_t = vij - (glm::dot(vij, rij / rij_len) * (rij / rij_len));
+        glm::vec3 fsTmp = (-k * (d - rij_len)) * (rij / rij_len);
+        glm::vec3 fdTmp = n * vij;
+        glm::vec3 ftTmp = k * vij_t;
+
+        fs += fsTmp;
+        fd += fdTmp;
+        ft += ftTmp;
+        po.fs -= fsTmp;
+        po.fd -= fdTmp;
+        po.ft -= ftTmp;
+        
+    }
+
+}
