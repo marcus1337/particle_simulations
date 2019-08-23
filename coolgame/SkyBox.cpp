@@ -8,6 +8,7 @@
 SkyBox::SkyBox() {
 }
 
+/*Load skybox shader and VBO*/
 void SkyBox::init(MyWindow* mywindow_) {
     mywindow = mywindow_;
     skyProgram = loadShaderProgram("skybox.vert", "skybox.frag");
@@ -27,8 +28,8 @@ void SkyBox::init(MyWindow* mywindow_) {
     glVertexAttribPointer(POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 }
 
+/*Render a skybox cube surrounding the camera at all time so that it never moves.*/
 void SkyBox::draw(glm::mat4& VP) {
-
     float scaleVal = 20.f;
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(scaleVal, scaleVal, scaleVal));
     glm::mat4 rotateMat = glm::mat4(1.0f);
@@ -51,6 +52,7 @@ void SkyBox::draw(glm::mat4& VP) {
     glDepthMask(GL_TRUE);
 }
 
+//Free memory
 void SkyBox::cleanup() {
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vertexVBO);

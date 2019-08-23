@@ -2,10 +2,9 @@
 
 Shape::Shape(ShaderShape& shader_) : shader(shader_), model(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)),
 mscale(1.f,1.f,1.f), position(0,0,0), orientation(1.f,0,0,0) {
-
 }
 
-
+//Render a 3D object which has been loaded from an OBJ-file.
 void Shape::draw(glm::mat4& VP) {
 
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), mscale);

@@ -52,14 +52,14 @@ struct KeyData {
 class CollisionReducer {
 
 public:
-    float multiplier = 10000.f;
+    float multiplier = 10000.f; //account for the fact that the radius is very small
     int64_t voxLen;
 
     std::map<KeyXYZ, std::vector<KeyData>> voxels;
-    CollisionReducer(double partRadius); //initialize a new, unused hash
-    void addPart(int64_t objIndex, int64_t partIndex, float x, float y, float z); //stores in hasher
+    CollisionReducer(double partRadius); //initialize
+    void addPart(int64_t objIndex, int64_t partIndex, float x, float y, float z);
     std::set<KeyXYZ> potentialCollisions;
-    bool mapHas(KeyXYZ& k);
+    bool mapHas(KeyXYZ& k); //check if map contains a key
 };
 
 

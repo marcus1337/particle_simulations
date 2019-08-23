@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+/*Used for keyboard or mouse inputs.*/
 class CommandHandler {
 
     bool movRight, movLeft, movUp, movDown;

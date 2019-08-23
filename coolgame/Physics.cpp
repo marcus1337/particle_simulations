@@ -5,6 +5,7 @@
 
 using namespace std;
 
+/*Accumulate all initial relative positions to create an inertia tensor matrix*/
 void ObjectData::prepareData(float mass_, glm::vec3 r) {
     mass += mass_;
     float Ixx = mass_ * (r.y*r.y + r.z*r.z);
@@ -20,9 +21,9 @@ void ObjectData::prepareData(float mass_, glm::vec3 r) {
         Izx, Izy, Izz);
 
     I0_inv = glm::inverse(I0);
-
 }
 
+/*Do physics calculations where Fc and Tc is the sum of all particle forces.*/
 void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
 
     glm::mat4 RM = glm::toMat4(rotation);
@@ -31,7 +32,7 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
 
     It_inv = glm::mat3(RM * I0_inv4 * RM_T);
 
-    Fc /= 10.f;
+    Fc /= 10.f; //Reduce the speed so that it's easier to see what happens when testing the program.
     Tc /= 10.f;
 
     F = Fc;
@@ -46,11 +47,11 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
     rotation = glm::normalize(rotation);
 
     position += V;
-
 }
 
 ParticleData::ParticleData(){}
 
+/*Initialize particle physics data. These are used in physics calculations.*/
 ParticleData::ParticleData(glm::vec3 partPos_, float radius_, ObjectData* objData_) {
     objData = objData_;
     r0 = partPos_ - objData_->centerOfMass;
@@ -60,16 +61,16 @@ ParticleData::ParticleData(glm::vec3 partPos_, float radius_, ObjectData* objDat
     update();
 }
 
+/*Make particle data ready for new collision force calculations by resetting the data.*/
 void ParticleData::update() {
     glm::quat Qs = glm::conjugate(objData->rotation);
     glm::quat Q = objData->rotation;
-    r = Q * r0;// * Qs; //this is different from the instructions.
+    r = Q * r0;// * Qs; //This is different from the instructions on GPU-gems.
     v = objData->V + glm::cross(objData->W, r);
     fd = fs = ft = glm::vec3(0, 0, 0);
-
-
 }
 
+/*Can be used for collision with made up particles (objects that are not particles, like the floor).*/
 void ParticleData::addCollision(glm::vec3 o_v, glm::vec3 o_r, float o_mass, bool canMove) {
     glm::vec3 rij = o_r - actualPos();
     glm::vec3 vij = o_v - v;
@@ -91,10 +92,12 @@ glm::vec3 ParticleData::getTc() {
     return glm::cross(r, (getFc()));
 }
 
+//Return the real world coordinate of a particle
 glm::vec3 ParticleData::actualPos() {
     return objData->position + objData->centerOfMass + r;
 }
 
+/*Check if two particles intersect based on their radius and position, if they collide we translate the positions since they can't intersect and apply physical forces.*/
 void ParticleData::collisionParticle(ParticleData& po) {
 
     float radiusSum = objData->partRadius + po.objData->partRadius;
@@ -127,9 +130,9 @@ void ParticleData::collisionParticle(ParticleData& po) {
         glm::vec3 fdTmp = n * vij;
         glm::vec3 ftTmp = k * vij_t;
 
-        fs += fsTmp;
-        fd += fdTmp;
-        ft += ftTmp;
+        fs += fsTmp; //spring force
+        fd += fdTmp; //damping force
+        ft += ftTmp; //relative tangental force
         po.fs -= fsTmp;
         po.fd -= fdTmp;
         po.ft -= ftTmp;

@@ -8,6 +8,7 @@ using namespace std;
 ParticleObject::ParticleObject(){
 }
 
+/*Copy constructor.*/
 ParticleObject::ParticleObject(const ParticleObject& a) {
     *this = a;
     for (auto& x : particles) {
@@ -15,6 +16,8 @@ ParticleObject::ParticleObject(const ParticleObject& a) {
     }
 }
 
+
+/*Init VBO and create particles from vertices by testing intersections in ParticleCreator.*/
 void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_, ShaderShape* shaderShape_, ParticleShader* particleShadCreator_) {
     partRadius = partRadius_;
     shaderShape = shaderShape_;
@@ -33,20 +36,19 @@ void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_,
     objData.centerOfMass /= partPositions.size();
     //objData.centerOfMass = glm::vec3(1000, 0, 0); //comment out to not have center at 0
 
-    partRadius /= 2;
+    partRadius /= 2; //These divisions by 2 was apparently necessary to have proper radius, not sure why.
     partRadius *= scaleVal_;
     partRadius /= 2;
-
     objData.partRadius = partRadius;
 
-    for (int i = 0; i < partPositions.size(); i++) {
+    for (int i = 0; i < partPositions.size(); i++) { //Make particle positions relative to center of mass.
         objData.prepareData(1.0f, partPositions[i] - objData.centerOfMass);
     }
 
     partShadIndex = particleShadCreator->getShaderIndex(ParticleShader::FOX, partRadius, color, partPositions);
 
     int indice_ = 0;
-    for (auto p : partPositions) {
+    for (auto p : partPositions) { //Store particles in particle array, along with the whole objects data
         ParticleData partData(p,partRadius,&objData);
 
         Particle particle(partData, particleShader, p, partRadius, 1.0f);
@@ -57,24 +59,8 @@ void ParticleObject::init2(float partRadius_, float scaleVal_, glm::vec4 color_,
     indices.resize(particles.size());
 }
 
-void ParticleObject::init(float partDiameter_, ShaderShape* shaderShape_, ShaderShape* particleShader_, ShaderShape* particleShader2_) {
-    partDiameter = partDiameter_;
-    shaderShape = shaderShape_;
-    particleShader = particleShader_;
 
-    ParticleCreator pcreator(shaderShape->ctx.mesh.vertices, partDiameter /2.0f);
-    auto partPositions = pcreator.createParticles();
-
-    cout << "points : " << partPositions.size() << endl;
-
-    for (auto p : partPositions) {
-        p *= 0.01;
-        Particle particle(particleShader, p, partDiameter/2.0f, 0.01*(partDiameter /2.0f));
-        particle.hitShader = particleShader2_;
-        particles.push_back(particle);
-    }
-}
-
+/*Apply physics calculations from each particle.*/
 void ParticleObject::doPhysics() {
 
     glm::vec3 Fc(0,0,0);
@@ -89,6 +75,7 @@ void ParticleObject::doPhysics() {
 }
 
 
+/*Draw each particle individually (not used)*/
 void ParticleObject::draw(glm::mat4& VP) {
     for (auto& particle : particles) {
         particle.draw(VP);
@@ -116,10 +103,10 @@ void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_) {
     glUniform1f(glGetUniformLocation(prog, "P11"), P11);
     glUniform2fv(glGetUniformLocation(prog, "u_screenSize"), 1, glm::value_ptr(screenSize));
    
-    //glDrawElements(GL_POINTS, particleShadCreator->shaders[partShadIndex].numVertices, GL_UNSIGNED_INT,0);
+
     glBindVertexArray(vao);
 
-    if (color.w < 1.0f) {
+    if (color.w < 1.0f) { //Special rendering if color is transparent.
         std::sort(particles.begin(), particles.end(), [&](const Particle& v1, const Particle& v2) {
             glm::vec4 p1(v1.position, 1.0f);
             glm::vec4 p2(v2.position, 1.0f);
@@ -143,7 +130,7 @@ void ParticleObject::draw2(glm::mat4& VP, glm::mat4& P, glm::vec3 cameraPos_) {
     glBindVertexArray(0);
 }
 
-
+//Copy function
 void ParticleObject::copyObject(ParticleObject& other) {
     *this = other;
     for (auto& x : particles) {

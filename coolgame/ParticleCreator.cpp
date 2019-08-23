@@ -3,6 +3,7 @@
 
 using namespace std;
 
+/*Make triangles into particles, create an imaginary grid and shoot rays into it to test intersections with triangles.*/
 ParticleCreator::ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen_) : vertices(_vertices), voxLen(voxLen_) {
     zmin = ymin = xmin = std::numeric_limits<float>::max();
     zmax = ymax = xmax = std::numeric_limits<float>::min();
@@ -37,10 +38,7 @@ ParticleCreator::ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen
     numBoxIndices.z = roundf(numBoxIndices.z);
 
     zvalue_hits = std::vector<std::vector<std::vector<float>>>(numBoxIndices.x, std::vector<std::vector<float>>(numBoxIndices.y));
-
 }
-
-
 
 //returns z-value for line-triangle hits, didHit_ tells if any hit
 float ParticleCreator::checkLineTriangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec3 q1, glm::vec3 q2, bool& didHit_) {
@@ -66,17 +64,7 @@ float ParticleCreator::checkLineTriangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p
 }
 
 
-bool ParticleCreator::sameFloat(float f1, float f2) {
-    if (f2 > f1) {
-        float temp = f1;
-        f1 = f2;
-        f2 = temp;
-    }
-    float res = f1 - f2;
-    return res < 0.001f;
-}
-
-
+/*Used to test if a line intersects a triangle.*/
 int ParticleCreator::signedVolume(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d) {
     float temp = glm::dot(glm::cross(b - a, c - a), d - a);
     if (temp == 0)
@@ -90,12 +78,12 @@ int ParticleCreator::signedVolume(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::ve
 std::vector<glm::vec3> ParticleCreator::createParticles() {
     std::vector<glm::vec3> result;
 
-    for (int i = 0; i < vertices.size(); i+=3) {
+    for (int i = 0; i < vertices.size(); i+=3) { //each triangle
         glm::vec3 p1 = vertices[i];
         glm::vec3 p2 = vertices[i+1];
         glm::vec3 p3 = vertices[i+2];
 
-        p1.x += (xmin*-1.f);
+        p1.x += (xmin*-1.f); //avoid less than zero values when creating indexes
         p2.x += (xmin*-1.f);
         p3.x += (xmin*-1.f);
         p1.y += (ymin*-1.f);
@@ -105,7 +93,7 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
         p2.z += (zmin*-1.f);
         p3.z += (zmin*-1.f);
 
-        int fromX = (int)(std::min(p1.x, std::min(p2.x,p3.x)) / voxLen);
+        int fromX = (int)(std::min(p1.x, std::min(p2.x,p3.x)) / voxLen); //reduce the amount of triangles we check, in worst case this wont help, but in practice it makes so that only 1 triangle gets tested instead of many
         int fromY = (int)(std::min(p1.y, std::min(p2.y, p3.y)) / voxLen);
 
         int toX = (int)(std::max(p1.x, std::max(p2.x, p3.x)) / voxLen);
@@ -119,7 +107,7 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
                 bool didHit = false;
                 float zHit = checkLineTriangle(p1, p2, p3, q1, q2, didHit);
                 if (didHit) {
-                    zvalue_hits[k][l].push_back(zHit);
+                    zvalue_hits[k][l].push_back(zHit); //Save all z-values for 2D coordinates
                 }
             }
         }
@@ -127,7 +115,7 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
 
     for (int i = 0; i < numBoxIndices.x; i++) {
         for (int j = 0; j < numBoxIndices.y; j++) {
-            if (zvalue_hits[i][j].size() % 2 != 0) {
+            if (zvalue_hits[i][j].size() % 2 != 0) { //Detect if something went wrong, should be even amount of hits
                 cout << "Wrong z-values: " << i << " , " << j << " ENDING PROGRAM." << endl;
                // exit(EXIT_FAILURE);
                 continue;
@@ -135,9 +123,9 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
             if (zvalue_hits[i][j].empty())
                 continue;
 
-            sort(zvalue_hits[i][j].begin(), zvalue_hits[i][j].end());
+            sort(zvalue_hits[i][j].begin(), zvalue_hits[i][j].end()); //sort intersections from closest to farthest away
 
-            bool isOdd = false;
+            bool isOdd = false; //if the number of intersections with a line is odd, then we are inside the object, create particle.
             int hitIndex = 0;
             for (int z_box = 0; z_box < numBoxIndices.z && hitIndex < numBoxIndices.z; z_box+=1) {
                 float nowZ = z_box * voxLen + midVoxVal;
@@ -152,12 +140,9 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
                     glm::vec3 particlePoint(nowX, nowY, nowZ);
                     result.push_back(particlePoint);
                 }
-
             }
-
         }
     }
-
 
     return result;
 }

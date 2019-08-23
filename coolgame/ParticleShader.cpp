@@ -4,6 +4,7 @@
 
 using namespace std;
 
+/*Create a new VBO for each unique object, if VBO already exist for certain parameters, then we send a vector index value containing an existing VBO.*/
 int ParticleShader::getShaderIndex(int ID_, float radius_, glm::vec4 color_, std::vector<glm::vec3>& particles_) {
 
     for (int i = 0; i < shaders.size(); i++) {
