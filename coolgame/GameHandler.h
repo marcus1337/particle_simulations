@@ -32,8 +32,8 @@
 class GameHandler{
 
     MyWindow mywindow;
-    ShaderShape shapeshader, particleShader, particleShader2;
-    ShaderShape particleTestShader;
+    ShaderShape shapeshader, particleShader;
+    //ShaderShape particleTestShader;
     ParticleShader partShadCreator, partShadCreator2;
     Floor floor;
 
@@ -47,9 +47,7 @@ class GameHandler{
 
     std::vector<ParticleObject> particleObjs;
 
-    Particle testParticle, testParticle2, tp3;
-
-    //Particle tps[125];
+    //Particle testParticle, testParticle2;
 
     ParticleData& getP(int objInd, int partInd);
 

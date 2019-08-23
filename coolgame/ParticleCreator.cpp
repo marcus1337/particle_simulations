@@ -25,7 +25,7 @@ ParticleCreator::ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen
         if (v.z > zmax)
             zmax = v.z;
     }
-    cout << "MIN " << xmin << " _ " << ymin << " _ " << zmin << " MAX " << xmax << " _ " << ymax << " _ " << zmax << endl;
+    //cout << "MIN " << xmin << " _ " << ymin << " _ " << zmin << " MAX " << xmax << " _ " << ymax << " _ " << zmax << endl;
     glm::vec3 maxP(xmax, ymax, zmax);
     glm::vec3 minP(xmin, ymin, zmin);
     cubeDimensions = maxP - minP;
@@ -36,12 +36,6 @@ ParticleCreator::ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen
     numBoxIndices.z = roundf(numBoxIndices.z);
 
     zvalue_hits = std::vector<std::vector<std::vector<float>>>(numBoxIndices.x, std::vector<std::vector<float>>(numBoxIndices.y));
-    /*allHitVoxels = std::vector<std::vector<std::vector<bool>>>(numBoxIndices.x, std::vector<std::vector<bool>>(numBoxIndices.y));
-    for (int i = 0; i < numBoxIndices.x; i++) {
-        for (int j = 0; j < numBoxIndices.y; j++) {
-            allHitVoxels[i][j] = std::vector<bool>(numBoxIndices.z,false);
-        }
-    }*/
 
 }
 
@@ -91,13 +85,6 @@ int ParticleCreator::signedVolume(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::ve
     return 1;
 }
 
-std::vector<glm::vec3> ParticleCreator::createParticles2() {
-    std::vector<glm::vec3> result;
-
-
-    return result;
-}
-
 
 std::vector<glm::vec3> ParticleCreator::createParticles() {
     std::vector<glm::vec3> result;
@@ -132,19 +119,10 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
                 float zHit = checkLineTriangle(p1, p2, p3, q1, q2, didHit);
                 if (didHit) {
                     zvalue_hits[k][l].push_back(zHit);
-                   // cout << "TEST " << k << ", " << l << ", " << zHit << endl;
                 }
             }
         }
     }
-
-   /* glm::vec3 pp1(1, -1, 0);
-    glm::vec3 pp2(0, 1, 0);
-    glm::vec3 pp3(-1, -1, 0);
-    glm::vec3 qq1(0,0,1);
-    glm::vec3 qq2(0,0,-1);
-    bool didhitt = false;
-    float zHitt = checkLineTriangle(pp1, pp2, pp3, qq1, qq2, didhitt);*/
 
     for (int i = 0; i < numBoxIndices.x; i++) {
         for (int j = 0; j < numBoxIndices.y; j++) {
@@ -153,7 +131,6 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
                // exit(EXIT_FAILURE);
                 continue;
             }
-          //  cout << "[i,j] " << "[" << i << "," << j << "] " << zvalue_hits[i][j].size() << endl;
             if (zvalue_hits[i][j].empty())
                 continue;
 
@@ -173,7 +150,6 @@ std::vector<glm::vec3> ParticleCreator::createParticles() {
                     nowZ += zmin;
                     glm::vec3 particlePoint(nowX, nowY, nowZ);
                     result.push_back(particlePoint);
-                   // cout << "X " << nowX << " Y " << nowY << " Z " << nowZ << endl;
                 }
 
             }

@@ -27,7 +27,7 @@ struct KeyXYZ {
 
 };
 
-struct KeyHasher
+/*struct KeyHasher
 {
     std::size_t operator()(const KeyXYZ& k) const
     {
@@ -53,7 +53,7 @@ struct KeyDataObj {
     {
         return !operator==(rhs);
     }
-};
+};*/
 
 struct KeyData {
     KeyData() : objIndex(0), partIndex(0){};
@@ -74,9 +74,6 @@ struct KeyData {
     {
         return !operator==(rhs);
     }
-
-   // std::vector<KeyDataObj> storedParticles;
-  //  int64_t potentials = 0; //amount of different objects in this + surrounding voxels, if >= 2 then potential collision
 
 };
 

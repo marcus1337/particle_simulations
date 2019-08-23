@@ -16,12 +16,12 @@ GameHandler::GameHandler() {
     shapes.push_back(Shape(shapeshader));
     shapes[0].mscale = glm::vec3(0.01f, 0.01f, 0.01f);
 
-    particleShader.objName = "icosphere2.obj";
+   /* particleShader.objName = "icosphere2.obj";
     particleShader.init();
     particleShader2.objName = "icosphere2.obj";
     particleShader2.fragShadName = "particle.frag";
     particleShader2.vertShadName = "particle.vert";
-    particleShader2.init();
+    particleShader2.init();*/
 
 
     /////////////
@@ -60,7 +60,7 @@ GameHandler::GameHandler() {
     floor.init();
 
     //////////////
-    particleTestShader.initParticleShader1();
+  /*  particleTestShader.initParticleShader1();
     
     testParticle.shader = &particleTestShader;
     testParticle.position = glm::vec3(1, 1, 0);
@@ -78,25 +78,20 @@ GameHandler::GameHandler() {
     testParticle2.scaleVal = 0.01f*testParticle.radius;
     testParticle2.cameraPos = &mywindow.camera.Position;
     testParticle2.screenWidth = &mywindow.SCR_WIDTH;
-    testParticle2.screenHeight = &mywindow.SCR_HEIGHT;
+    testParticle2.screenHeight = &mywindow.SCR_HEIGHT;*/
 
    // testParticle.radius = 0.5f;
-    testParticle2.radius = 0.5f;
+   // testParticle2.radius = 0.5f;
 
     /*for (int i = 0; i < 125; i++) {
         tps[i] = testParticle;
         tps[i].isColliding = true;
     }*/
 
-    commandhandler.movablePosition = &testParticle.position;
-    mywindow.commandhandler = &commandhandler;
+    //commandhandler.movablePosition = &testParticle.position;
 
-    //shapes[0].position.x = 200;
-   // shapes[0].position.z = 130;
-    //shapes[0].orientation = glm::quat(0.7071067f, 0, 0.7071067f, 0);
+    mywindow.commandhandler = &commandhandler;
     previous = current = glfwGetTime() * 1000;
-    // double starttime = glfwGetTime();
-    // double endtime = glfwGetTime();
 
 }
 
@@ -106,10 +101,6 @@ GameHandler::~GameHandler() {
     for (auto po : programs) {
         glDeleteProgram(po.second);
     }
-}
-
-std::string getVecStr3(glm::vec3 adata) {
-    return std::string("[" + to_string(adata.x) + "," + to_string(adata.y) + "," + to_string(adata.z) + "]");
 }
 
 ParticleData& GameHandler::getP(int objInd, int partInd) {
@@ -174,75 +165,6 @@ void GameHandler::checkCollisions() {
         }
     }
 
-   // cout << "co " << counter << endl;
-
-
-   /* int counter = 0;
-    for (auto& it : collRed.voxels) {
-        for (auto& a : it.second.storedParticles) {
-            for (auto& b : it.second.storedParticles) {
-                if (a.objIndex != b.objIndex) {
-                    particleObjs[a.objIndex].particles[a.partIndex].
-                        partData.collisionParticle(particleObjs[b.objIndex].particles[b.partIndex].partData);
-                }
-            }
-        }
-    }*/
-           // auto& p = getP(a.objIndex, a.partIndex);
-           // for (int64_t ix = a.kx - 1; ix <= a.kx + 1; ix++) {
-             //   for (int64_t iy = a.ky - 1; iy <= a.ky + 1; iy++) {
-               //     for (int64_t iz = a.kz - 1; iz <= a.kz + 1; iz++) {
-                        //counter++;
-                       // KeyXYZ key1(ix, iy, iz);
-                      //  if (collRed.mapHas(key1)) {
-
-                       // }
-
-                 //   }
-                //}
-           // }
-
-
-
-    //if(collRed.potentialCollisions.size() > 0)
-     //   cout << "COLLS: " << collRed.potentialCollisions.size() << endl;
-
-   // testParticle.isColliding = false;
-   // testParticle.isColliding = testParticle.checkCollision(testParticle2);
-    //int counter = 0;
-    //testParticle.partData.v = glm::vec3(20, 0, 0);
-
-
-  //  cout << "WAT " << particleObjs[0].objData.position.y << endl;
-
-    /*for (int i = 0; i < particleObjs.size(); i++) {
-        for (int j = i+1; j < particleObjs.size(); j++) {
-            for (Particle& part : particleObjs[i].particles) {
-                for (Particle& part2 : particleObjs[j].particles) {
-                    part.partData.collisionParticle(part2.partData);
-                }
-            }
-        }
-    }*/
-
-   // for (Particle& part : particleObj[0].particles) {
-        //tp3.position = part.partData.actualPos();
-        //tps[counter].position = part.partData.actualPos();
-        //counter++;
-        //if (Particle::checkCollision(part.partData.actualPos(), testParticle.position, part.radius,testParticle.radius)) {
-        //    testParticle.isColliding = true;
-        //    part.partData.addCollision(glm::vec3(20, 0, 0), testParticle.position);
-        //cout << "TEST " << part.position.x << "," << part.position.y << "," << part.position.z << endl;
-        //}
-       // for (Particle& part2 : particleObj[1].particles) {
-            //if (Particle::checkCollision(part.partData.actualPos(), part2.partData.actualPos(), part.partData.objData->partRadius, part2.partData.objData->partRadius)) {
-                //cout << "TEST: " << getVecStr3(part.partData.actualPos()) << " _ " << getVecStr3(part2.partData.actualPos()) << " R_ " << part.partData.objData->partRadius << " _ " << part2.partData.objData->partRadius << endl;
-              //    part.partData.collisionParticle(part2.partData);
-        //    }
-           
-      //  }
-   // }
-
     //Check collision with the floor
     for (int i = 0; i < particleObjs.size(); i++) {
         for (Particle& part : particleObjs[i].particles) {
@@ -250,18 +172,13 @@ void GameHandler::checkCollisions() {
             glm::vec3 pos = part.partData.actualPos();
             if (pos.y - part.radius < floor.position.y) {
                 //  part.partData.addCollision(particleObj.objData.V*-1.f, glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
-
                 particleObjs[i].objData.V.y /= 2;
                 part.partData.addCollision(glm::vec3(part.partData.v.x, part.partData.v.y + part.partData.gravity.y, part.partData.v.z), glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
-
                 //part.partData.addCollision(glm::vec3(0, 9.81, 0), glm::vec3(pos.x, pos.y - part.radius/2, pos.z), 1.f, false);
                 particleObjs[i].objData.position.y += floor.position.y - (pos.y - part.radius);
-                //cout << "TEST: " << (floor.position.y) << " r " << part.radius << " _ " << pos.y << endl;
             }
         }
     }
-
-   // cout << "TEST " << particleObj.objData.V.y << endl;
 
     for (int i = 0; i < particleObjs.size(); i++) {
         particleObjs[i].doPhysics();
@@ -282,22 +199,17 @@ void GameHandler::render() {
 
     glEnable(GL_DEPTH_TEST);
 
-    testParticle.draw2(VP, mywindow.projection, mywindow.view);
-    testParticle2.draw2(VP, mywindow.projection, mywindow.view);
-    //tp3.draw2(VP, mywindow.projection, mywindow.view);
-
-   // for (int i = 0; i < 125; i++) {
-   //     tps[i].draw2(VP, mywindow.projection, mywindow.view);
-   // }
+   // testParticle.draw2(VP, mywindow.projection, mywindow.view);
+   // testParticle2.draw2(VP, mywindow.projection, mywindow.view);
     
     for (int i = 0; i < particleObjs.size(); i++) {
         particleObjs[i].draw2(VP, mywindow.projection, mywindow.camera.Position);
     }
 
 
-    for (Shape& shape : shapes) {
+   // for (Shape& shape : shapes) {
    //     shape.draw(VP);
-    }
+   // }
 
     floor.draw(VP, mywindow.projection, mywindow.camera.Position);
 

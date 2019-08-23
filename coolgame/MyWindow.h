@@ -28,8 +28,8 @@ public:
     GLFWwindow* window;
 
     // settings
-    int SCR_WIDTH = 800*2;
-    int SCR_HEIGHT = 600*2;
+    int SCR_WIDTH = 800;
+    int SCR_HEIGHT = 600;
 
     // camera
     Camera camera;

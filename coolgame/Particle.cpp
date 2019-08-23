@@ -3,48 +3,7 @@
 
 using namespace std;
 
-void Particle::printStuff() {
-    //cout << "X: " << cx << " Y: " << cy << " Z: " << cz << endl;
-}
-/*
-void BoundingSphere::init(ObjMesh* pMesh) {
-    int numVerts = pMesh->m_iNumberOfVertices;
-    if (numVerts == 0)
-        return;
-
-    cx = cy = cz = 0;
-    radius = 0;
-
-    for (int i = 0; i < numVerts; i++) { //average coordinate
-        cx += pMesh->m_aVertexArray[i].x;
-        cy += pMesh->m_aVertexArray[i].y;
-        cz += pMesh->m_aVertexArray[i].z;
-    }
-    cx /= (float) numVerts;
-    cy /= (float) numVerts;
-    cz /= (float) numVerts;
-
-   // printStuff();
-
-    for (int i = 0; i < numVerts; i++) {
-        float tmpx = pMesh->m_aVertexArray[i].x;
-        float tmpy = pMesh->m_aVertexArray[i].y;
-        float tmpz = pMesh->m_aVertexArray[i].z;
-
-        float tmpDist = MyVector::pointDist(MyPosition(cx, cy, cz), MyPosition(tmpx, tmpy, tmpz));
-        if (tmpDist > radius) {
-            radius = tmpDist;
-         //   cout << "X: " << cx << " Y: " << cy << " Z: " << cz << " RAD: " << radius << endl;
-          //  cout << "X: " << tmpx << " Y: " << tmpy << " Z: " << tmpz << " RAD: " << radius << endl;
-            lx = tmpx;
-            ly = tmpy;
-            lz = tmpz;
-        }
-    }
-  //  std::cout << "TEST " << radius << std::endl;
-}*/
-
-//int counter = 0;
+void Particle::printStuff() {}
 
 bool Particle::checkCollision(glm::vec3 pos1, glm::vec3 pos2, float radius1, float radius2) {
     bool result = false;
@@ -57,13 +16,6 @@ bool Particle::checkCollision(Particle& otherParticle) {
     bool result = false;
     float tmpDist = glm::distance(position, otherParticle.position);
     tmpDist < ((radius+otherParticle.radius)) ? result = true : result = false;
-
-   /* counter = (counter + 1) % 10;
-    if (counter == 7)
-        cout << "POS: " << position.x << " " << position.y
-         << " " << position.z << " _ " << otherParticle.position.x <<
-        " " << otherParticle.position.y << " " << otherParticle.position.z  << " DIST: "
-        << tmpDist<<  " RAD: " << ((radius + otherParticle.radius)) << " WAT " << otherParticle.radius << " _ " << scaleVal << endl;*/
     return result;
 }
 
@@ -135,7 +87,6 @@ void Particle::draw2(glm::mat4& VP, glm::mat4& P, glm::mat4& V) {
 
 std::string Particle::getCoordStr() {
     return "";
-    //return "X: " + std::to_string(cx) + " Y: " + std::to_string(cy) + " Z: " + std::to_string(cz) + " RAD: " + std::to_string(radius) +  "\n";
 }
 
 void Particle::drawShader(ShaderShape* tmpShape_, glm::mat4& MVP) {

@@ -24,7 +24,7 @@ auto MyWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
         mywindow->goForward = false;
     }
-        //mywindow->camera.ProcessKeyboard(FORWARD, mywindow->deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         mywindow->goBack = true;
     }
@@ -32,7 +32,7 @@ auto MyWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
         mywindow->goBack = false;
     }
-        //mywindow->camera.ProcessKeyboard(BACKWARD, mywindow->deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         mywindow->goLeft = true;
     }
@@ -40,7 +40,7 @@ auto MyWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
         mywindow->goLeft = false;
     }
-        //mywindow->camera.ProcessKeyboard(LEFT, mywindow->deltaTime);
+  
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         mywindow->goRight = true;
     }
@@ -48,11 +48,11 @@ auto MyWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
         mywindow->goRight = false;
     }
-       // mywindow->camera.ProcessKeyboard(RIGHT, mywindow->deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
         mywindow->rotateRight = true;
     }
-        //mywindow->camera.ProcessKeyboard(ROTATERIGHT, mywindow->deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         mywindow->rotateLeft = true;
     }
@@ -60,7 +60,7 @@ auto MyWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
         mywindow->rotateRight = true;
     }
-    //mywindow->camera.ProcessKeyboard(ROTATERIGHT, mywindow->deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         mywindow->rotateLeft = true;
     }
@@ -73,8 +73,6 @@ auto MyWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
         mywindow->rotateLeft = false;
     }
 
-        //mywindow->camera.ProcessKeyboard(ROTATELEFT, mywindow->deltaTime);
-
 }
 
 auto MyWindow::window_size_callback(GLFWwindow* window, int width, int height)
@@ -83,11 +81,6 @@ auto MyWindow::window_size_callback(GLFWwindow* window, int width, int height)
     MyWindow* mywindow = static_cast<MyWindow*>(glfwGetWindowUserPointer(window));
     mywindow->SCR_WIDTH = width;
     mywindow->SCR_HEIGHT = height;
-
-
-    // glMatrixMode(GL_PROJECTION);
-   //  glLoadIdentity();
-   //  perspectiveGL(45.0, (float)width / (float)height, 1.0, 500.0);
 }
 
 

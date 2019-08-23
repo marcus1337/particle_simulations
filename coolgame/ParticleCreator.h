@@ -28,7 +28,6 @@ public:
 
     ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen_);
     std::vector<glm::vec3> createParticles();
-    std::vector<glm::vec3> createParticles2();
 
 
 };

@@ -19,13 +19,8 @@ void ObjectData::prepareData(float mass_, glm::vec3 r) {
         Iyx, Iyy, Izy,
         Izx, Izy, Izz);
 
-    //I0_inv = invMat(I0);
     I0_inv = glm::inverse(I0);
 
-}
-
-std::string getVecStr2(glm::vec3 adata) {
-    return std::string("[" + to_string(adata.x) + "," + to_string(adata.y) + "," + to_string(adata.z) + "]");
 }
 
 void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
@@ -34,7 +29,6 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
     glm::mat4 I0_inv4 = glm::mat4(I0_inv);
     glm::mat4 RM_T = glm::transpose(RM);
 
-  //  cout << "A " << I0_inv4[0][0] << endl;
     It_inv = glm::mat3(RM * I0_inv4 * RM_T);
 
     Fc /= 10.f;
@@ -51,8 +45,6 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
     rotation = glm::cross(dq, rotation);
     rotation = glm::normalize(rotation);
 
-    //if(V.x != 0 || V.z != 0)
-    //cout << "TEST " << getVecStr2(V) << endl;
     position += V;
 
 }
