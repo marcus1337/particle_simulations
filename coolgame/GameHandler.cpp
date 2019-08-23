@@ -38,6 +38,24 @@ GameHandler::GameHandler() {
     particleObjs[1].init2(17.f, 0.01f, glm::vec4(1, 0, 0, 1.0f), &shapeshader, &partShadCreator);
     particleObjs[1].objData.position.y = 3;
 
+    particleObjs.push_back(ParticleObject());
+    particleObjs[2].screenWidth = &mywindow.SCR_WIDTH;
+    particleObjs[2].screenHeight = &mywindow.SCR_HEIGHT;
+    particleObjs[2].init2(17.f, 0.01f, glm::vec4(0.7, 0, 1, 1.0f), &shapeshader, &partShadCreator);
+    particleObjs[2].objData.position.y = 2;
+    particleObjs[2].objData.position.z = -2;
+    particleObjs[2].objData.V = glm::vec3(0, 0, 0.005f);
+
+   /* particleObjs.push_back(ParticleObject());
+    particleObjs[3].screenWidth = &mywindow.SCR_WIDTH;
+    particleObjs[3].screenHeight = &mywindow.SCR_HEIGHT;
+    particleObjs[3].init2(17.f, 0.01f, glm::vec4(0.7, 0.5, 1, 1.0f), &shapeshader, &partShadCreator);
+    particleObjs[3].objData.position.x = 5;
+    particleObjs[3].objData.position.y = 1;
+    particleObjs[3].objData.position.z = 0;
+    particleObjs[3].objData.V = glm::vec3(-0.020, 0, 0);
+    particleObjs[3].objData.rotation = glm::quat(glm::vec3(90.f, 45.f, 0.f));*/
+
 
     floor.init();
 
@@ -94,7 +112,100 @@ std::string getVecStr3(glm::vec3 adata) {
     return std::string("[" + to_string(adata.x) + "," + to_string(adata.y) + "," + to_string(adata.z) + "]");
 }
 
+ParticleData& GameHandler::getP(int objInd, int partInd) {
+    return particleObjs[objInd].particles[partInd].partData;
+}
+
 void GameHandler::checkCollisions() {
+
+    CollisionReducer collRed(particleObjs[0].partRadius);
+
+    for (int i = 0; i < particleObjs.size(); i++) {
+        for (int j = 0; j < particleObjs[i].particles.size(); j++) {
+            auto& part = particleObjs[i].particles[j];
+            glm::vec3 pPos = part.partData.actualPos();
+            collRed.addPart(i, j, pPos.x, pPos.y, pPos.z);
+        }
+    }
+
+    int counter = 0;
+    for (auto& it : collRed.voxels) {
+        const KeyXYZ& a = it.first;
+
+        for (int i = 0; i < collRed.voxels[a].size(); i++) {
+            for (int j = i+1; j < collRed.voxels[a].size(); j++) {
+                int64_t obInd1 = collRed.voxels[a][i].objIndex;
+                int64_t obInd2 = collRed.voxels[a][j].objIndex;
+                int64_t parInd1 = collRed.voxels[a][i].partIndex;
+                int64_t parInd2 = collRed.voxels[a][j].partIndex;
+
+                if (obInd1 != obInd2) {
+                    auto& p = getP(obInd1, parInd1);
+                    auto& p2 = getP(obInd2, parInd2);
+                    p.collisionParticle(p2);
+                }
+            }
+        }
+
+        for (int64_t ix = a.x - 1; ix <= a.x + 1; ix++) {
+            for (int64_t iy = a.y - 1; iy <= a.y + 1; iy++) {
+                for (int64_t iz = a.z - 1; iz <= a.z + 1; iz++) {
+                     KeyXYZ b(ix, iy, iz);
+                      if (collRed.mapHas(b)) {
+                          
+                          for (int i = 0; i < collRed.voxels[a].size(); i++) {
+                              for (int j = 0; j < collRed.voxels[b].size(); j++) {
+                                  int64_t obInd1 = collRed.voxels[a][i].objIndex;
+                                  int64_t obInd2 = collRed.voxels[b][j].objIndex;
+                                  int64_t parInd1 = collRed.voxels[a][i].partIndex;
+                                  int64_t parInd2 = collRed.voxels[b][j].partIndex;
+
+                                  if (obInd1 != obInd2) {
+                                      auto& p = getP(obInd1, parInd1);
+                                      auto& p2 = getP(obInd2, parInd2);
+                                      p.collisionParticle(p2);
+                                  }
+                              }
+                          }
+
+                      }
+                }
+            }
+        }
+    }
+
+   // cout << "co " << counter << endl;
+
+
+   /* int counter = 0;
+    for (auto& it : collRed.voxels) {
+        for (auto& a : it.second.storedParticles) {
+            for (auto& b : it.second.storedParticles) {
+                if (a.objIndex != b.objIndex) {
+                    particleObjs[a.objIndex].particles[a.partIndex].
+                        partData.collisionParticle(particleObjs[b.objIndex].particles[b.partIndex].partData);
+                }
+            }
+        }
+    }*/
+           // auto& p = getP(a.objIndex, a.partIndex);
+           // for (int64_t ix = a.kx - 1; ix <= a.kx + 1; ix++) {
+             //   for (int64_t iy = a.ky - 1; iy <= a.ky + 1; iy++) {
+               //     for (int64_t iz = a.kz - 1; iz <= a.kz + 1; iz++) {
+                        //counter++;
+                       // KeyXYZ key1(ix, iy, iz);
+                      //  if (collRed.mapHas(key1)) {
+
+                       // }
+
+                 //   }
+                //}
+           // }
+
+
+
+    //if(collRed.potentialCollisions.size() > 0)
+     //   cout << "COLLS: " << collRed.potentialCollisions.size() << endl;
 
    // testParticle.isColliding = false;
    // testParticle.isColliding = testParticle.checkCollision(testParticle2);
@@ -104,7 +215,7 @@ void GameHandler::checkCollisions() {
 
   //  cout << "WAT " << particleObjs[0].objData.position.y << endl;
 
-    for (int i = 0; i < particleObjs.size(); i++) {
+    /*for (int i = 0; i < particleObjs.size(); i++) {
         for (int j = i+1; j < particleObjs.size(); j++) {
             for (Particle& part : particleObjs[i].particles) {
                 for (Particle& part2 : particleObjs[j].particles) {
@@ -112,7 +223,7 @@ void GameHandler::checkCollisions() {
                 }
             }
         }
-    }
+    }*/
 
    // for (Particle& part : particleObj[0].particles) {
         //tp3.position = part.partData.actualPos();
@@ -140,13 +251,8 @@ void GameHandler::checkCollisions() {
             if (pos.y - part.radius < floor.position.y) {
                 //  part.partData.addCollision(particleObj.objData.V*-1.f, glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
 
-              //  if (i == 0) {
-             //       cout << "EY " << getVecStr3(part.partData.v) << " _ " << getVecStr3(pos) << endl;
-             //   }
-
                 particleObjs[i].objData.V.y /= 2;
-                part.partData.addCollision(glm::vec3(part.partData.v.x, part.partData.v.y + 9.81 / 2, part.partData.v.z), glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
-               // cout << "TEST " << part.radius << endl;
+                part.partData.addCollision(glm::vec3(part.partData.v.x, part.partData.v.y + part.partData.gravity.y, part.partData.v.z), glm::vec3(pos.x, pos.y - part.radius / 2, pos.z), 1.f, false);
 
                 //part.partData.addCollision(glm::vec3(0, 9.81, 0), glm::vec3(pos.x, pos.y - part.radius/2, pos.z), 1.f, false);
                 particleObjs[i].objData.position.y += floor.position.y - (pos.y - part.radius);

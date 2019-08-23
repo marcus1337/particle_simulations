@@ -37,8 +37,8 @@ void ObjectData::update(glm::vec3 Fc, glm::vec3 Tc) {
   //  cout << "A " << I0_inv4[0][0] << endl;
     It_inv = glm::mat3(RM * I0_inv4 * RM_T);
 
-    Fc /= 8000.f*15;
-    Tc /= 8000.f*15;
+    Fc /= 10.f;
+    Tc /= 10.f;
 
     F = Fc;
 

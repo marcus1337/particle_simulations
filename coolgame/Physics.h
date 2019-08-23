@@ -43,7 +43,7 @@ struct ParticleData {
     float n; //damp constant, assume all particles are of same size
 
     ObjectData* objData = nullptr;
-    glm::vec3 gravity = glm::vec3(0,9.81f,0);
+    glm::vec3 gravity = glm::vec3(0,9.81f,0)/8000.f;
     //glm::vec3 gravity = glm::vec3(0, 0.001f, 0);
 
     ParticleData();

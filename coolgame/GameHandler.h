@@ -27,6 +27,8 @@
 
 #include "Floor.h"
 
+#include "CollisionReducer.h"
+
 class GameHandler{
 
     MyWindow mywindow;
@@ -48,6 +50,8 @@ class GameHandler{
     Particle testParticle, testParticle2, tp3;
 
     //Particle tps[125];
+
+    ParticleData& getP(int objInd, int partInd);
 
 public:
 

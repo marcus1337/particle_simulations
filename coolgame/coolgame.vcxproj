@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionReducer.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="SkyBox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionReducer.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Particle.h" />
