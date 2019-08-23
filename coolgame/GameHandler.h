@@ -6,8 +6,6 @@
 #include <GLFW/glfw3.h>
 
 #include <stdlib.h>
-#include "EnumStuff.h"
-#include "IOstuff.h"
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>

@@ -13,7 +13,7 @@ int ParticleShader::getShaderIndex(int ID_, float radius_, glm::vec4 color_, std
 
     if (ID_ == FOX) {
         ShaderData result;
-        //std::string objName = "low-poly-fox-by-pixelmannen.obj";
+
         std::string vertShadName = "particle3.vert";
         std::string fragShadName = "particle3.frag";
 
@@ -50,11 +50,6 @@ int ParticleShader::getShaderIndex(int ID_, float radius_, glm::vec4 color_, std
         auto radiusNBytes = allRadius.size() * sizeof(allRadius[0]);
         glBufferData(GL_ARRAY_BUFFER, radiusNBytes, allRadius.data(), GL_STATIC_DRAW);
 
-       /* glGenBuffers(1, &result.indexVBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.indexVBO);
-        auto indicesNBytes = indices.size() * sizeof(indices[0]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesNBytes, indices.data(), GL_STATIC_DRAW);*/
-
         glGenVertexArrays(1, &(result.vao));
         glBindVertexArray(result.vao);
 
@@ -69,10 +64,6 @@ int ParticleShader::getShaderIndex(int ID_, float radius_, glm::vec4 color_, std
         glBindBuffer(GL_ARRAY_BUFFER, result.radiusVBO);
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.indexVBO);
-
-       // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, result.indexVBO);
         glBindVertexArray(0); // unbinds the VAO
 
         result.numVertices = particles_.size();

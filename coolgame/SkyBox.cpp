@@ -5,14 +5,15 @@
 
 #include "MiscCode/utils3.h"
 
-
 SkyBox::SkyBox() {
 }
 
 void SkyBox::init(MyWindow* mywindow_) {
     mywindow = mywindow_;
     skyProgram = loadShaderProgram("skybox.vert", "skybox.frag");
-    skyText = loadCubemap(pathCubeMap);
+    std::string totpath = myLoc::project_location + pathCubeMap;
+
+    skyText = loadCubemap(totpath);
 
     glGenBuffers(1, &(vertexVBO));
     glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);

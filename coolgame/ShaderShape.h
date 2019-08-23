@@ -14,7 +14,7 @@
 
 
 class ShaderShape {
-    std::string path3D = "C:\\Users\\Marcus\\source\\repos\\coolgame\\Debug\\3d_models\\";
+    std::string path3D = "Debug\\3d_models\\";
 
 public:
     Context ctx;
@@ -28,8 +28,6 @@ public:
     std::string fragShadName = "mesh.frag";
 
     void init();
-
-    void initParticleShader1();
 
     void cleanup();
 

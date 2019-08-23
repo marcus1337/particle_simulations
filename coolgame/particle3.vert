@@ -20,12 +20,14 @@ void main()
 	gl_Position = MVP * gl_Position;
 	gl_PointSize = (u_screenSize.y *  P11 * radius) / gl_Position.w;
 
+	//These calculations make gl_PointSize reflect real world size coordinates,
+	//indipendently on screen size or resolution
+
 	radiusPixels = gl_PointSize / 2.0;
 	centre = (0.5 * gl_Position.xy/gl_Position.w + 0.5) * u_screenSize;
 	if(gl_PointSize <= 0)
 		gl_PointSize = 1;
 
-	//gl_PointSize= u_screenSize.x;
 	color = v_color;
 
 }

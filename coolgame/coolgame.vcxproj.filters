@@ -68,15 +68,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnumStuff.h">
-      <Filter>Header Files\IO</Filter>
-    </ClInclude>
-    <ClInclude Include="IOstuff.h">
-      <Filter>Header Files\IO</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaCallCpp.h">
-      <Filter>Header Files\IO</Filter>
-    </ClInclude>
     <ClInclude Include="lodepng\lodepng.h">
       <Filter>MISC</Filter>
     </ClInclude>
@@ -134,39 +125,15 @@
     <ClInclude Include="CollisionReducer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Paths.h">
+      <Filter>Header Files\IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\luascripts.lua">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="triangle.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="triangle.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="mesh.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="mesh.vert">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="skybox.vert">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="skybox.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="particle.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="particle.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="particle2.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="particle2.vert">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="particle3.vert">

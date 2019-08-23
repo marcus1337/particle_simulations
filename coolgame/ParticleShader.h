@@ -54,7 +54,6 @@ public:
     static constexpr int FOX = 1;
     std::vector<ShaderData> shaders;
     int getShaderIndex(int ID_, float radius_, glm::vec4 color_, std::vector<glm::vec3>& particles_);
-    std::string path3D = "C:\\Users\\Marcus\\source\\repos\\coolgame\\Debug\\3d_models\\";
 
     ~ParticleShader() {
         for (auto& sh : shaders)

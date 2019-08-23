@@ -39,33 +39,21 @@ public:
 
     MyWindow();
     ~MyWindow();
+
+    //Callback functions for keyboard, mouse, window events...
     inline static auto mouse_callback(GLFWwindow* window, double xpos, double ypos);
     inline static auto scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
     inline static auto key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     inline static auto window_size_callback(GLFWwindow* window, int width, int height);
 
-    void processActions();
-
+    void processActions(); //process keyboard inputs
     bool initWindow();
 
     glm::mat4 projection, view;
     void handleFrame();
 
-    float P11 = 1.f;
+    float P11 = 1.f; //used for gl_pointsize calculations
 
 };
 
 #endif
-
-
-
-/*void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar);
-void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
-{
-    const GLdouble pi = 3.1415926535897932384626433832795;
-    GLdouble fW, fH;
-    //fH = tan( (fovY / 2) / 180 * pi ) * zNear;
-    fH = tan(fovY / 360 * pi) * zNear;
-    fW = fH * aspect;
-    glFrustum(-fW, fW, -fH, fH, zNear, zFar);
-}*/

@@ -20,7 +20,7 @@ public:
     SkyBox();
 
     void init(MyWindow*);
-    std::string pathCubeMap = "C:\\Users\\Marcus\\source\\repos\\coolgame\\Debug\\cubemaps\\tornado\\";
+    std::string pathCubeMap = "Debug\\cubemaps\\tornado\\";
 
     void draw(glm::mat4& VP);
     void cleanup();

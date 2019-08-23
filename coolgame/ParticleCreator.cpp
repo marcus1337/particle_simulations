@@ -7,7 +7,8 @@ ParticleCreator::ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen
     zmin = ymin = xmin = std::numeric_limits<float>::max();
     zmax = ymax = xmax = std::numeric_limits<float>::min();
     midVoxVal = voxLen / 2.0f;
-    //for (int i = 0; i < vertices.size(); i++) {
+
+    //for (int i = 0; i < vertices.size(); i++) { //can be used to scale vertices if needed.
         //vertices[i] *= 20;
     //}
 
@@ -25,7 +26,7 @@ ParticleCreator::ParticleCreator(std::vector<glm::vec3>& _vertices, float voxLen
         if (v.z > zmax)
             zmax = v.z;
     }
-    //cout << "MIN " << xmin << " _ " << ymin << " _ " << zmin << " MAX " << xmax << " _ " << ymax << " _ " << zmax << endl;
+
     glm::vec3 maxP(xmax, ymax, zmax);
     glm::vec3 minP(xmin, ymin, zmin);
     cubeDimensions = maxP - minP;

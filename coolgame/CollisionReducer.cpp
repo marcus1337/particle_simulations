@@ -5,16 +5,9 @@
 using namespace std;
 
 CollisionReducer::CollisionReducer(double partRadius) {
-
-    //cout << "RAD " << partRadius << endl;
-   // minVal *= multiplier;
-   // gridSize *= multiplier;
     partRadius *= multiplier;
-   // double voxTmpLen = double(gridSize) / (partRadius * 2.f * 4);
-   // voxLen = (int64_t)(voxTmpLen + 0.5);
     double tmpVoxLen = partRadius * 2;
     voxLen = (int64_t) round(tmpVoxLen);
-
 }
 
 
@@ -61,71 +54,3 @@ bool CollisionReducer::mapHas(KeyXYZ& k) {
     }
     return false;
 }
-
-
-/*  x *= multiplier;
-  y *= multiplier;
-  z *= multiplier;
-
-  int64_t ix = (x / voxLen);
-  int64_t iy = (y / voxLen);
-  int64_t iz = (z / voxLen);
-
-  //cout << "WAT " << objIndex << "_ " << ix << " " << iy << " " << iz << " AA " << voxLen << endl;
-
-  KeyXYZ key(ix, iy, iz);
-  KeyDataObj obj(objIndex, partIndex);
-
-  if (!mapHas(key)) {
-      KeyData kdata;
-      kdata.potentials = 1;
-      kdata.storedParticles.push_back(obj);
-      voxels[key] = kdata;
-  }
-  else {
-      if (voxels[key].storedParticles.size() > 4) {
-          return;
-      }
-
-      for (auto& x : voxels[key].storedParticles) {
-          if (x.objIndex == objIndex) {
-              voxels[key].storedParticles.push_back(obj);
-              return;
-          }
-      }
-      voxels[key].storedParticles.push_back(obj);
-      voxels[key].potentials++;
-      potentialCollisions.insert(key);
-  }
-
-  for (int64_t a = ix - 1; a <= ix + 1; a++) {
-      for (int64_t b = iy - 1; b <= iy + 1; b++) {
-          for (int64_t c = iz - 1; c <= iz + 1; c++) {
-              if (a == ix && b == iy && c == iz)
-                  continue;
-
-              KeyXYZ otherKey(a, b, c);
-
-              if (!mapHas(otherKey)) {
-                  KeyData kdata;
-                  kdata.potentials = 1;
-                  voxels[otherKey] = kdata;
-              }
-              else {
-                  bool hasSame = false;
-                  for (auto& x : voxels[otherKey].storedParticles) {
-                      if (x.objIndex == objIndex) {
-                          hasSame = true;
-                      }
-                  }
-                  if (hasSame)
-                      continue;
-                  if (!voxels[otherKey].storedParticles.empty()) {
-                      voxels[otherKey].potentials++;
-                      potentialCollisions.insert(otherKey);
-                  }
-              }
-
-          }
-      }
-  }*/

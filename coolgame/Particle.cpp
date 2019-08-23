@@ -3,7 +3,6 @@
 
 using namespace std;
 
-void Particle::printStuff() {}
 
 bool Particle::checkCollision(glm::vec3 pos1, glm::vec3 pos2, float radius1, float radius2) {
     bool result = false;
@@ -19,19 +18,19 @@ bool Particle::checkCollision(Particle& otherParticle) {
     return result;
 }
 
-void Particle::setTrans(float x, float y, float z) {
+void Particle::setTrans(float x, float y, float z) { //Not used now
     position.x = x;
     position.y = y;
     position.z = z;
 }
 
-void Particle::addTrans(float x, float y, float z) {
+void Particle::addTrans(float x, float y, float z) { //Not used now
     position.x += x;
     position.y += y;
     position.z += z;
 }
 
-void Particle::draw(glm::mat4& VP) {
+void Particle::draw(glm::mat4& VP) { //Can be used for individual particle rendering
 
     glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(scaleVal, scaleVal, scaleVal));
     //glm::mat4 rotateMat = glm::toMat4(orientation);
@@ -47,7 +46,7 @@ void Particle::draw(glm::mat4& VP) {
     }
 }
 
-void Particle::draw2(glm::mat4& VP, glm::mat4& P, glm::mat4& V) {
+void Particle::draw2(glm::mat4& VP, glm::mat4& P, glm::mat4& V) { //Render a set of particles using a VBO (Not used)
     glm::mat4 translateMat = glm::translate(glm::mat4(1.0f), position);
     glm::mat4 modModel = translateMat;
     glm::mat4 MVP = VP * modModel;
@@ -83,10 +82,6 @@ void Particle::draw2(glm::mat4& VP, glm::mat4& P, glm::mat4& V) {
 
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-}
-
-std::string Particle::getCoordStr() {
-    return "";
 }
 
 void Particle::drawShader(ShaderShape* tmpShape_, glm::mat4& MVP) {

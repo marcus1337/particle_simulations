@@ -151,10 +151,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CommandHandler.h" />
-    <ClInclude Include="EnumStuff.h" />
-    <ClInclude Include="IOstuff.h" />
     <ClInclude Include="lodepng\lodepng.h" />
-    <ClInclude Include="LuaCallCpp.h" />
     <ClInclude Include="MiscCode\OBJ_Loader.h" />
     <ClInclude Include="MiscCode\utils.h" />
     <ClInclude Include="MiscCode\utils2.h" />
@@ -163,27 +160,19 @@
     <ClInclude Include="ParticleCreator.h" />
     <ClInclude Include="ParticleObject.h" />
     <ClInclude Include="ParticleShader.h" />
+    <ClInclude Include="Paths.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="ShaderShape.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="SkyBox.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\luascripts.lua" />
     <None Include="floor.frag" />
     <None Include="floor.vert" />
-    <None Include="mesh.frag" />
-    <None Include="mesh.vert" />
-    <None Include="particle.frag" />
-    <None Include="particle.vert" />
-    <None Include="particle2.frag" />
-    <None Include="particle2.vert" />
     <None Include="particle3.frag" />
     <None Include="particle3.vert" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />
-    <None Include="triangle.frag" />
-    <None Include="triangle.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

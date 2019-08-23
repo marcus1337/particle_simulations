@@ -7,8 +7,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
 #include <functional> //for std::hash
+#include "../Paths.h"
 
 namespace {
 
@@ -40,8 +40,8 @@ void showProgramInfoLog(GLuint program)
     std::cerr << infoLogStr << std::endl;
 }
 
-std::string path3DShaders = "C:\\Users\\Marcus\\source\\repos\\coolgame\\coolgame\\";
-std::string path2DTexts = "C:\\Users\\Marcus\\source\\repos\\coolgame\\Debug\\res\\";
+std::string path3DShaders = "coolgame\\";
+std::string path2DTexts = "Debug\\res\\";
 
 std::vector<std::pair<size_t, GLuint>> programs;
 
@@ -58,7 +58,7 @@ GLuint loadShaderProgram(const std::string &vertexShaderFilename,
 
     // Load and compile vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    std::string vertexShaderSource = readShaderSource(path3DShaders+vertexShaderFilename);
+    std::string vertexShaderSource = readShaderSource(myLoc::project_location + path3DShaders+vertexShaderFilename);
     const char *vertexShaderSourcePtr = vertexShaderSource.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderSourcePtr, nullptr);
 
@@ -66,7 +66,7 @@ GLuint loadShaderProgram(const std::string &vertexShaderFilename,
     GLint compiled = 0;
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compiled);
     if (!compiled) {
-        std::cerr << "Vertex shader compilation failed:" << std::endl;
+        std::cerr << "Vertex shader compilation failed: " << vertexShaderFilename << std::endl;
         showShaderInfoLog(vertexShader);
         glDeleteShader(vertexShader);
         return 0;
@@ -74,7 +74,7 @@ GLuint loadShaderProgram(const std::string &vertexShaderFilename,
 
     // Load and compile fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    std::string fragmentShaderSource = readShaderSource(path3DShaders+fragmentShaderFilename);
+    std::string fragmentShaderSource = readShaderSource(myLoc::project_location + path3DShaders+fragmentShaderFilename);
     const char *fragmentShaderSourcePtr = fragmentShaderSource.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSourcePtr, nullptr);
 
@@ -120,7 +120,7 @@ GLuint loadShaderProgram(const std::string &vertexShaderFilename,
 
 GLuint load2DTexture(const std::string &filename_, bool repeatPattern = false)
 {
-    std::string filename = path2DTexts + filename_;
+    std::string filename = myLoc::project_location + path2DTexts + filename_;
     std::vector<unsigned char> data;
     unsigned width, height;
     unsigned error = lodepng::decode(data, width, height, filename);
